@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package staffino.identity.v1;
+
+option go_package = "staffino/gen/staffino/identity/v1;identityv1";
+
+import "google/protobuf/timestamp.proto";
+
+service IdentityService {
+    rpc RequestOTP(RequestOTPRequest) returns (RequestOTPResponse);
+    rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
+}
+
+message User{
+    string id = 1;
+    string phone = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
+message RequestOTPRequest{
+    string phone = 1;
+}
+
+message RequestOTPResponse{
+    int32 expires_in_seconds = 1;
+}
+
+message VerifyOTPRequest{
+    string phone = 1;
+    string otp = 2;
+}
+
+message VerifyOTPResponse{
+   User user = 1;
+   string access_token = 2;
+   google.protobuf.Timestamp access_token_expires_at = 3;
+}
+
+message GetUserRequest{
+    string id =1;
+}
+
+message GetUserResponse{
+    User user =1;
+}
